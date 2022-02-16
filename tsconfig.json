@@ -1,26 +1,41 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "alwaysStrict": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "pretty": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es5",
+    "esModuleInterop": true,
+    "module": "esnext", // "es2015" for tree-shaking
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@services/*": ["src/services/*"],
+      "@state/*": ["src/state/*"],
+
+      // Make linked module to be recognized by the application on dev env
+      "@naturacosmeticos/natura-components": [
+        "node_modules/@naturacosmeticos/natura-components/dist/src"
+      ],
+      "@naturacosmeticos/natura-components/*": [
+        "node_modules/@naturacosmeticos/natura-components/dist/src/*"
+      ]
+    },
+    "lib": ["es2017", "dom"],
+    "types": ["node", "react", "jest"]
   },
-  "include": [
-    "src"
-  ]
+  "exclude": ["node_modules", "dist"]
 }
