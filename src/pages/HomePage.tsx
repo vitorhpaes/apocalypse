@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect } from 'react'
-import Person, { PersonResponse } from '../@types/Person'
+import Person from '../@types/Person'
 import List from 'src/components/List/List'
-import axios from 'axios'
 import { Button, Container, Input } from '@mui/material'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
 import Header from 'src/components/Header/Header'
-import { FiSearch } from 'react-icons/fi'
 import { handleDispatch, handleSelect } from 'src/state'
 import { setList } from 'src/state/slices/people'
+import { fetchPeople } from 'src/services/people/query'
+import { FiSearch } from 'react-icons/fi'
+import { IoReloadSharp } from 'react-icons/io5'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -31,47 +32,41 @@ const HomePage: React.FC = () => {
     []
   )
 
-  useEffect(() => {
-    const fetchPeople = async () => {
-      const { data } = await axios.get('http://localhost:3333/people')
+  const handleFetch = async () => {
+    const personList = await fetchPeople()
+    saveList(personList)
+  }
 
-      const normalizedPeople: Person[] = data.map((person: PersonResponse) => {
-        const status = {
-          id: person.status,
-          description:
-            person.status === 1
-              ? 'good'
-              : person.status === 2
-              ? 'examining'
-              : 'infected',
-        }
-        return { ...person, status }
-      })
-      saveList(normalizedPeople)
-    }
-    fetchPeople()
+  useEffect(() => {
+    handleFetch()
   }, [])
 
   return (
     <Container>
       <Header>
-        <>
-          <Input
-            name="search"
-            type="search"
-            className={classes.searchInput}
-            color="primary"
-            placeholder={'Search by name'}
-          />
-          <Button
-            variant={'text'}
-            color={'info'}
-            size={'small'}
-            sx={{ minWidth: 40, minHeight: 30 }}
-          >
-            <FiSearch />
-          </Button>
-        </>
+        <Input
+          name="search"
+          type="search"
+          className={classes.searchInput}
+          color="primary"
+          placeholder={'Search by name'}
+        />
+        <Button
+          variant={'text'}
+          color={'info'}
+          size={'small'}
+          sx={{ minWidth: 40, minHeight: 30 }}
+        >
+          <FiSearch />
+        </Button>
+        <Button
+          variant={'text'}
+          color={'warning'}
+          size={'small'}
+          sx={{ minWidth: 40, minHeight: 30, marginLeft: 'auto' }}
+        >
+          <IoReloadSharp />
+        </Button>
       </Header>
       <List people={peopleList} />
     </Container>

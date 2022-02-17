@@ -2,17 +2,21 @@ export default interface Person {
   id: number
   name: string
   avatar: string
-  status: {
-    id: number
-    description: 'good' | 'examining' | 'infected'
-  }
   age: number
+  status: PersonStatus
+}
+export interface PersonStatus {
+  id: StatusResponse
+  description: 'good' | 'examining' | 'infected'
 }
 
+export interface PeopleResponse extends Array<PersonResponse> {}
+
+type StatusResponse = 1 | 2 | 3
 export interface PersonResponse {
   id: number
   name: string
   avatar: string
-  status: 1 | 2 | 3
+  status: StatusResponse
   age: number
 }
