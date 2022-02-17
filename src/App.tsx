@@ -1,23 +1,24 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Person from "./@types/Person";
-import List from "./components/List/List";
+import React from 'react'
+import Routes from './routes/Routes'
+import { makeStyles, ThemeProvider } from '@material-ui/styles'
+import SystemTheme from './helpers/SystemTheme'
+import './App.css'
+
+const useStyles = makeStyles({
+  backgroundApp: {
+    background: SystemTheme.palette.background.default,
+  },
+})
 
 const App: React.FC = () => {
-  const [people, setPeople] = useState<Person[]>([]);
-  useEffect(() => {
-    const fetchPeople = async () => {
-      const { data } = await axios.get("http://localhost:3333/people");
-      setPeople(data);
-    };
-    fetchPeople();
-  }, []);
-
+  const classes = useStyles()
   return (
-    <div className="App">
-      <List people={people} />
-    </div>
-  );
-};
+    <ThemeProvider theme={SystemTheme}>
+      <div className={classes.backgroundApp}>
+        <Routes />
+      </div>
+    </ThemeProvider>
+  )
+}
 
-export default App;
+export default App
