@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import Person from '../@types/Person'
+import Person from '../@types/Person/Person'
 import List from 'src/components/List/List'
 import { Button, Container, Input } from '@mui/material'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
       return (
         toLowerCase.name.includes(lowerFilterQuery) ||
         compare(toLowerCase.id, lowerFilterQuery) > 85 ||
-        compare(toLowerCase.name, lowerFilterQuery) > 50 ||
+        compare(toLowerCase.name, lowerFilterQuery) > 35 ||
         toLowerCase.status === lowerFilterQuery
       )
     })

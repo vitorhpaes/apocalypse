@@ -1,5 +1,13 @@
-import React from 'react'
-import Person from 'src/@types/Person'
+import React, { memo, useCallback } from 'react'
+import {
+  PERSON_STATUS_EXAMINING,
+  PERSON_STATUS_INFECTED,
+  PERSON_STATUS_GOOD,
+  isExamining,
+  isInfected,
+  isGood,
+} from 'src/@types/Person/Constants'
+import Person, { PersonStatus } from 'src/@types/Person/Person'
 import {
   Avatar,
   Badge,
@@ -14,6 +22,8 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import { GiShamblingZombie, GiSwordman } from 'react-icons/gi'
 import { FiActivity } from 'react-icons/fi'
+import { handleDispatch } from 'src/state'
+import { savePerson } from 'src/state/slices/people'
 
 interface PersonCardProps {
   person: Person
@@ -59,6 +69,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   const classes = useStyles()
+  const dispatch = handleDispatch()
+
+  const handleChangePersonStatus = useCallback(
+    (newStatus: PersonStatus) =>
+      dispatch(
+        savePerson({
+          id: person.id,
+          status: newStatus,
+        })
+      ),
+    []
+  )
+
   return (
     <Grid item md={4} sm={6}>
       <Card className={classes.personCard}>
@@ -101,16 +124,37 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
         </CardContent>
         <CardActions>
           <Button size="small">See More</Button>
-          <Button size="small" color={'warning'}>
-            Examining
-          </Button>
-          <Button size="small" color={'error'}>
-            Infected
-          </Button>
+          {!isExamining(person.status) && !isInfected(person.status) && (
+            <Button
+              size="small"
+              color={'warning'}
+              onClick={() => handleChangePersonStatus(PERSON_STATUS_EXAMINING)}
+            >
+              Examining
+            </Button>
+          )}
+          {isExamining(person.status) && (
+            <Button
+              size="small"
+              color={'success'}
+              onClick={() => handleChangePersonStatus(PERSON_STATUS_GOOD)}
+            >
+              Not infected
+            </Button>
+          )}
+          {(isExamining(person.status) || isGood(person.status)) && (
+            <Button
+              size="small"
+              color={'error'}
+              onClick={() => handleChangePersonStatus(PERSON_STATUS_INFECTED)}
+            >
+              Infected
+            </Button>
+          )}
         </CardActions>
       </Card>
     </Grid>
   )
 }
 
-export default PersonCard
+export default memo(PersonCard)

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Person from 'src/@types/Person'
+import Person from 'src/@types/Person/Person'
 import storage from '../storage/index'
 
 interface PeopleProps {
@@ -21,10 +21,13 @@ export const basketSlice = createSlice({
   reducers: {
     setList: (state, action: PayloadAction<Person[]>) =>
       handleSetList(state, action.payload),
-    savePerson: (state, action: PayloadAction<Person>) => {
+    savePerson: (state, action: PayloadAction<Partial<Person>>) => {
       const newList = state.list.map((person) => {
         if (person.id !== action.payload.id) return person
-        return action.payload
+        return {
+          ...person,
+          ...action.payload,
+        }
       })
       handleSetList(state, newList)
     },

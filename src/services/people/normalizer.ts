@@ -1,4 +1,4 @@
-import Person, { PersonResponse } from 'src/@types/Person'
+import Person, { PersonResponse } from 'src/@types/Person/Person'
 
 const normalizeStatus = (statusIndex: 1 | 2 | 3) => ({
   id: statusIndex,
