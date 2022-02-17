@@ -29,6 +29,7 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/no-throw-literal': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
 
     // Allows the use of non-boolean types in expressions where a boolean is expected [https://github.com/typescript-eslint/typescript-eslint/blob/v4.28.1/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md]
     '@typescript-eslint/strict-boolean-expressions': 'off',
