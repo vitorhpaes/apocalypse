@@ -7,20 +7,17 @@ interface PersonCardProps {
   person: Person
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  console.log(theme)
-  return {
-    personCard: {
-      padding: '8px 16px',
-      background: `${theme.palette.primary.dark}!important`,
-    },
-  }
-})
+const useStyles = makeStyles((theme: Theme) => ({
+  personCard: {
+    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+    background: `linear-gradient(to bottom right, ${theme.palette.primary.main}, ${theme.palette.primary.dark} 120%)`,
+  },
+}))
 
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   const classes = useStyles()
   return (
-    <Grid item md={3}>
+    <Grid item md={4} sm={6}>
       <Paper elevation={1} className={classes.personCard}>
         <div>#{person.id}</div>
         <div>
