@@ -1,5 +1,7 @@
 import React from 'react'
+import { Container, Grid } from '@mui/material'
 import Person from '../../@types/Person'
+import PersonCard from '../PersonCard/PersonCard'
 
 interface ListProps {
   people: Person[]
@@ -7,18 +9,13 @@ interface ListProps {
 
 const List: React.FC<ListProps> = ({ people }) => {
   return (
-    <ul>
-      {people.map((person) => (
-        <li>
-          <div>#{person.id}</div>
-          <div>
-            <img src={person.avatar} alt={person.name} />
-          </div>
-          <div>{person.name}</div>
-          <div>survivor: {person.survivor ? 'yes' : 'no'}</div>
-        </li>
-      ))}
-    </ul>
+    <Container>
+      <Grid container spacing={3}>
+        {people.map((person) => (
+          <PersonCard key={person.name} person={person} />
+        ))}
+      </Grid>
+    </Container>
   )
 }
 
