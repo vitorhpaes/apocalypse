@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Person from '../@types/Person'
+import Person, { PersonResponse } from '../@types/Person'
 import List from 'src/components/List/List'
 import axios from 'axios'
-import { Container, Input } from '@mui/material'
+import { Button, Container, Input } from '@mui/material'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
+import Header from 'src/components/Header/Header'
+import { FiSearch } from 'react-icons/fi'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -11,9 +13,9 @@ const useStyles = makeStyles((theme: iTheme) => ({
     paddingRight: theme.spacing(1),
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginRight: theme.spacing(1),
     background: theme.palette.primary.light,
+    borderRadius: 4,
   },
 }))
 
@@ -24,20 +26,46 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchPeople = async () => {
       const { data } = await axios.get('http://localhost:3333/people')
-      setPeople(data)
+
+      const normalizedPeople: Person[] = data.map((person: PersonResponse) => {
+        console.log(person.status)
+        const status = {
+          id: person.status,
+          description:
+            person.status === 1
+              ? 'good'
+              : person.status === 2
+              ? 'examining'
+              : 'infected',
+        }
+        return { ...person, status }
+      })
+      setPeople(normalizedPeople)
     }
     fetchPeople()
   }, [])
 
   return (
     <Container>
-      <Input
-        name="search"
-        type="search"
-        className={classes.searchInput}
-        color="primary"
-        placeholder={'Search by name'}
-      />
+      <Header>
+        <>
+          <Input
+            name="search"
+            type="search"
+            className={classes.searchInput}
+            color="primary"
+            placeholder={'Search by name'}
+          />
+          <Button
+            variant={'text'}
+            color={'info'}
+            size={'small'}
+            sx={{ minWidth: 40, minHeight: 30 }}
+          >
+            <FiSearch />
+          </Button>
+        </>
+      </Header>
       <List people={people} />
     </Container>
   )
