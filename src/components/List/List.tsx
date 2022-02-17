@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Grid } from '@mui/material'
 import Person from '../../@types/Person'
 import PersonCard from '../PersonCard/PersonCard'
@@ -17,4 +17,4 @@ const List: React.FC<ListProps> = ({ people }) => {
   )
 }
 
-export default List
+export default memo(List)
