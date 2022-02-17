@@ -8,6 +8,10 @@ import { StoreProvider } from './state'
 const useStyles = makeStyles({
   backgroundApp: {
     background: SystemTheme.palette.background.default,
+    height: '100vh',
+    width: '100vw',
+    position: 'fixed',
+    overflow: 'auto',
   },
 })
 

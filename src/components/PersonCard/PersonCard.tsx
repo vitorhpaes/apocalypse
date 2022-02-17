@@ -102,7 +102,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
         <CardActions>
           <Button size="small">See More</Button>
           <Button size="small" color={'warning'}>
-            Exames
+            Examining
           </Button>
           <Button size="small" color={'error'}>
             Infected

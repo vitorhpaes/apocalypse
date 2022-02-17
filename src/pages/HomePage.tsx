@@ -9,6 +9,7 @@ import { fetchPeople } from 'src/services/people/query'
 import { FiSearch } from 'react-icons/fi'
 import { IoReloadSharp } from 'react-icons/io5'
 import { resetList, setList } from 'src/state/slices/people'
+import compare from 'src/helpers/StringSimilarity'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -40,11 +41,19 @@ const HomePage: React.FC = () => {
   }
 
   const showingList = useMemo(() => {
+    const lowerFilterQuery = filterQuery.toLowerCase()
     return peopleState.filter((person) => {
+      if (!filterQuery) return true
+      const toLowerCase = {
+        id: String(person.id).toLowerCase(),
+        name: person.name.toLowerCase(),
+        status: person.status.description.toLowerCase(),
+      }
       return (
-        String(person.id) === filterQuery ||
-        person.name.includes(filterQuery) ||
-        String(person.status) === filterQuery
+        toLowerCase.name.includes(lowerFilterQuery) ||
+        compare(toLowerCase.id, lowerFilterQuery) > 85 ||
+        compare(toLowerCase.name, lowerFilterQuery) > 50 ||
+        toLowerCase.status === lowerFilterQuery
       )
     })
   }, [peopleState, filterQuery])
