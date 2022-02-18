@@ -4,9 +4,10 @@ import { makeStyles, ThemeProvider } from '@material-ui/styles'
 import SystemTheme from './helpers/SystemTheme'
 import './App.css'
 import { StoreProvider } from './state'
-// import { loadByLocale } from './driver/fileLoader'
+import getCurrentLocale from './helpers/UrlParser'
+
 const BootSite = React.lazy(
-  async () => await import('./driver/br/multisite/BootSite')
+  async () => await import(`./driver/${getCurrentLocale()}/multisite/BootSite`)
 )
 
 const useStyles = makeStyles({
