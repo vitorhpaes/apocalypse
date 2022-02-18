@@ -10,6 +10,7 @@ import { FiSearch } from 'react-icons/fi'
 import { IoReloadSharp } from 'react-icons/io5'
 import { resetList, setList } from 'src/state/slices/people'
 import compare from 'src/helpers/StringSimilarity'
+import { useTranslator } from '@eo-locale/react'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -28,6 +29,7 @@ const HomePage: React.FC = () => {
   const peopleState = handleSelect((state) => state.people.list)
   const dispatch = handleDispatch()
   const [filterQuery, setFilterQuery] = useState<string>('')
+  const { translate } = useTranslator()
 
   const handleSaveList = useCallback(
     (newList: Person[]) => dispatch(setList(newList)),
@@ -71,7 +73,7 @@ const HomePage: React.FC = () => {
           type="search"
           className={classes.searchInput}
           color="primary"
-          placeholder={'Search by name'}
+          placeholder={translate('search.inputPlaceHolder')}
           value={filterQuery}
           onChange={(e) => setFilterQuery(e.target.value)}
         />

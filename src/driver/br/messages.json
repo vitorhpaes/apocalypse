@@ -1,0 +1,15 @@
+{
+  "root": {
+    "details": "detalhes"
+  },
+  "search": {
+    "inputPlaceHolder": "Procurar..."
+  },
+  "person": {
+    "status": {
+      "good": "bem",
+      "examining": "examinando",
+      "infected": "infectado"
+    }
+  }
+}
