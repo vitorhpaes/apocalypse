@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { Grid } from '@mui/material'
-import Person from '../../@types/Person/Person'
+import Person from '../../@config/Person/Person'
 import PersonCard from '../PersonCard/PersonCard'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
 

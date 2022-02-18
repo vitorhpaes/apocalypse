@@ -1,7 +1,8 @@
 import React, { createContext, useContext } from 'react'
+import { SiteRoutes } from 'src/@config/Site/Routes'
 
 interface MultiSiteProps {
-  routes: { [key: string]: string }
+  routes: SiteRoutes
 }
 
 type iMultiSiteContext = MultiSiteProps | null

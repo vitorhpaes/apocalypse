@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import Person from '../@types/Person/Person'
+import Person from '../@config/Person/Person'
 import List from 'src/components/List/List'
 import { Button, Container, Input } from '@mui/material'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'

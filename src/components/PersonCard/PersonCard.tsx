@@ -6,8 +6,8 @@ import {
   isExamining,
   isInfected,
   isGood,
-} from 'src/@types/Person/Constants'
-import Person, { PersonStatus } from 'src/@types/Person/Person'
+} from 'src/@config/Person/Constants'
+import Person, { PersonStatus } from 'src/@config/Person/Person'
 import {
   Avatar,
   Badge,
