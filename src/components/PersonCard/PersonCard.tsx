@@ -6,8 +6,8 @@ import {
   isExamining,
   isInfected,
   isGood,
-} from 'src/@types/Person/Constants'
-import Person, { PersonStatus } from 'src/@types/Person/Person'
+} from 'src/@config/Person/Constants'
+import Person, { PersonStatus } from 'src/@config/Person/Person'
 import {
   Avatar,
   Badge,
@@ -24,6 +24,7 @@ import { GiShamblingZombie, GiSwordman } from 'react-icons/gi'
 import { FiActivity } from 'react-icons/fi'
 import { handleDispatch } from 'src/state'
 import { savePerson } from 'src/state/slices/people'
+import { useTranslator } from '@eo-locale/react'
 
 interface PersonCardProps {
   person: Person
@@ -70,6 +71,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   const classes = useStyles()
   const dispatch = handleDispatch()
+  const { translate } = useTranslator()
 
   const handleChangePersonStatus = useCallback(
     (newStatus: PersonStatus) =>
@@ -123,14 +125,14 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
           <Typography variant="h5">{person.name}</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">See More</Button>
+          <Button size="small">{translate('root.details')}</Button>
           {!isExamining(person.status) && !isInfected(person.status) && (
             <Button
               size="small"
               color={'warning'}
               onClick={() => handleChangePersonStatus(PERSON_STATUS_EXAMINING)}
             >
-              Examining
+              {translate('person.status.examining')}
             </Button>
           )}
           {isExamining(person.status) && (
@@ -139,7 +141,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
               color={'success'}
               onClick={() => handleChangePersonStatus(PERSON_STATUS_GOOD)}
             >
-              Not infected
+              {translate('person.status.good')}
             </Button>
           )}
           {(isExamining(person.status) || isGood(person.status)) && (
@@ -148,7 +150,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
               color={'error'}
               onClick={() => handleChangePersonStatus(PERSON_STATUS_INFECTED)}
             >
-              Infected
+              {translate('person.status.infected')}
             </Button>
           )}
         </CardActions>

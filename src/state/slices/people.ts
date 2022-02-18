@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Person from 'src/@types/Person/Person'
+import Person from 'src/@config/Person/Person'
 import storage from '../storage/index'
 
 interface PeopleProps {
