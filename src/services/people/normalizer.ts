@@ -1,9 +1,20 @@
-import Person, { PersonResponse } from 'src/@config/Person/Person'
+import Person, {
+  PersonResponse,
+  StatusResponse,
+} from 'src/@config/Person/Person'
 
-const normalizeStatus = (statusIndex: 1 | 2 | 3) => ({
+const normalizeStatus = (statusIndex: StatusResponse) => ({
   id: statusIndex,
   description:
-    statusIndex === 1 ? 'good' : statusIndex === 2 ? 'examining' : 'infected',
+    statusIndex === 1
+      ? 'good'
+      : statusIndex === 2
+      ? 'examining'
+      : statusIndex === 3
+      ? 'infected'
+      : statusIndex === 4
+      ? 'dead'
+      : 'dead',
 })
 
 export const normalizePeopleResponse = (data: PersonResponse[]): Person[] => {

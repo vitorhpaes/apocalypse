@@ -16,3 +16,4 @@ export const PERSON_STATUS_INFECTED: PersonStatus = {
 export const isGood = (status: PersonStatus) => status.id === 1
 export const isExamining = (status: PersonStatus) => status.id === 2
 export const isInfected = (status: PersonStatus) => status.id === 3
+export const isDead = (status: PersonStatus) => status.id === 4
