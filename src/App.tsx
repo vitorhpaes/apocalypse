@@ -5,9 +5,10 @@ import SystemTheme from './helpers/SystemTheme'
 import './App.css'
 import { StoreProvider } from './state'
 import getCurrentLocale from './helpers/UrlParser'
+const dynamicLocale = getCurrentLocale()
 
 const BootSite = React.lazy(
-  async () => await import(`./driver/${getCurrentLocale()}/multisite/BootSite`)
+  async () => await import(`./driver/${dynamicLocale}/multisite/BootSite`)
 )
 
 const useStyles = makeStyles({
