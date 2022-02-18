@@ -11,7 +11,6 @@ import {
 import Person, { PersonStatus } from 'src/@config/Person/Person'
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   CardActions,
@@ -21,13 +20,12 @@ import {
   Typography,
 } from '@mui/material'
 import { makeStyles } from '@material-ui/styles'
-import { GiShamblingZombie, GiSwordman } from 'react-icons/gi'
-import { FiActivity, FiThumbsDown } from 'react-icons/fi'
 import { handleDispatch } from 'src/state'
 import { savePerson } from 'src/state/slices/people'
 import { useTranslator } from '@eo-locale/react'
 import { useHistory } from 'react-router-dom'
 import { useSite } from 'src/driver/MultisiteContext'
+import StatusIcon from '../StatusIcon/StatusIcon'
 
 interface PersonCardProps {
   person: Person
@@ -56,22 +54,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.grey.A700,
     marginLeft: 3,
     letterSpacing: 0.4,
-  },
-  infectedIcon: {
-    color: theme.palette.error.dark,
-    fontSize: 22,
-  },
-  examiningIcon: {
-    color: theme.palette.warning.dark,
-    fontSize: 22,
-  },
-  goodIcon: {
-    color: theme.palette.success.dark,
-    fontSize: 22,
-  },
-  deadIcon: {
-    color: theme.palette.grey.A700,
-    fontSize: 22,
   },
 }))
 
@@ -115,28 +97,7 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
               sx={{ width: 80, height: 80 }}
             />
             <Grid className={classes.tagsParent}>
-              <Badge color="primary">
-                {person.status.description === 'good' && (
-                  <GiSwordman
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-                {person.status.description === 'examining' && (
-                  <FiActivity
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-                {person.status.description === 'infected' && (
-                  <GiShamblingZombie
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-                {person.status.description === 'dead' && (
-                  <FiThumbsDown
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-              </Badge>
+              <StatusIcon status={person.status} size={22} />
             </Grid>
           </Grid>
           <Typography variant="h5">{person.name}</Typography>

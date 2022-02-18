@@ -1,11 +1,21 @@
 import React from 'react'
-import { Avatar, Button, Container, Grid, Typography } from '@mui/material'
+import {
+  Avatar,
+  Button,
+  Chip,
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material'
 import Header from 'src/components/Header/Header'
 import { handleSelect } from 'src/state'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { useSite } from 'src/driver/MultisiteContext'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
 import { FiChevronLeft } from 'react-icons/fi'
+import { useTranslator } from '@eo-locale/react'
+import { PERSON_STATUS_CLASSES } from 'src/@config/Person/Constants'
+import StatusIcon from 'src/components/StatusIcon/StatusIcon'
 
 interface DetailsPageParams {
   id: string
@@ -30,6 +40,7 @@ const DetailsPage: React.FC = () => {
   const { id } = useParams<DetailsPageParams>()
   const { routes } = useSite()
   const history = useHistory()
+  const { translate } = useTranslator()
   const classes = useStyles()
   const person = handleSelect((state) =>
     state.people.list.find((person) => person.id === Number(id))
@@ -70,6 +81,15 @@ const DetailsPage: React.FC = () => {
                 </Typography>
               </div>
             </div>
+          </Grid>
+          <Grid item container md={3}>
+            <Chip
+              size={'small'}
+              label={translate(person.status.description)}
+              color={PERSON_STATUS_CLASSES[person.status.id]}
+              icon={<StatusIcon status={person.status} size={15} />}
+              variant={'outlined'}
+            />
           </Grid>
         </Grid>
       </Header>
