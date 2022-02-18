@@ -6,6 +6,7 @@
     "inputPlaceHolder": "Search..."
   },
   "person": {
+    "age": "age",
     "status": {
       "good": "good",
       "examining": "examining",

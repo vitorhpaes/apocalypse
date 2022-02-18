@@ -3,6 +3,7 @@ import { SiteRoutes } from 'src/@config/Site/Routes'
 
 interface MultiSiteProps {
   routes: SiteRoutes
+  format: { [key: string]: string }
 }
 
 type iMultiSiteContext = MultiSiteProps

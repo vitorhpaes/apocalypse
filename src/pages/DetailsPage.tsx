@@ -12,10 +12,12 @@ import { handleSelect } from 'src/state'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { useSite } from 'src/driver/MultisiteContext'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
-import { FiChevronLeft } from 'react-icons/fi'
+import { FiCalendar, FiChevronLeft } from 'react-icons/fi'
 import { useTranslator } from '@eo-locale/react'
 import { PERSON_STATUS_CLASSES } from 'src/@config/Person/Constants'
 import StatusIcon from 'src/components/StatusIcon/StatusIcon'
+import useFormat from 'src/components/hooks/useFormatDate'
+import { GiDeathSkull } from 'react-icons/gi'
 
 interface DetailsPageParams {
   id: string
@@ -34,11 +36,15 @@ const useStyles = makeStyles((theme: iTheme) => ({
   headerInfoDescription: {
     paddingLeft: theme.spacing(2),
   },
+  chip: {
+    paddingLeft: `${theme.spacing(1)}!important`,
+  },
 }))
 
 const DetailsPage: React.FC = () => {
   const { id } = useParams<DetailsPageParams>()
   const { routes } = useSite()
+  const { formatDate } = useFormat()
   const history = useHistory()
   const { translate } = useTranslator()
   const classes = useStyles()
@@ -72,7 +78,7 @@ const DetailsPage: React.FC = () => {
           </Grid>
           <Grid item md={6}>
             <div className={classes.headerInfo}>
-              <Typography variant={'h2'} className={classes.fontColor}>
+              <Typography variant={'h3'} className={classes.fontColor}>
                 {person.name}
               </Typography>
               <div className={classes.headerInfoDescription}>
@@ -82,14 +88,46 @@ const DetailsPage: React.FC = () => {
               </div>
             </div>
           </Grid>
-          <Grid item container md={3}>
+          <Grid
+            item
+            container
+            gap={2}
+            md={3}
+            direction={'column'}
+            alignItems={'flex-end'}
+          >
             <Chip
               size={'small'}
+              label={`#${person.id}`}
+              color={'secondary'}
+              variant={'outlined'}
+            />
+            <Chip
+              size={'small'}
+              className={classes.chip}
               label={translate(person.status.description)}
               color={PERSON_STATUS_CLASSES[person.status.id]}
               icon={<StatusIcon status={person.status} size={15} />}
               variant={'outlined'}
             />
+            <Chip
+              size={'small'}
+              className={classes.chip}
+              label={`${translate('person.age')}: ${person.age}`}
+              color={'info'}
+              icon={<FiCalendar size={15} />}
+              variant={'outlined'}
+            />
+            {!!person.deathDate && (
+              <Chip
+                size={'small'}
+                className={classes.chip}
+                label={`${formatDate(new Date(person.deathDate))}`}
+                color={'secondary'}
+                icon={<GiDeathSkull size={15} />}
+                variant={'outlined'}
+              />
+            )}
           </Grid>
         </Grid>
       </Header>
