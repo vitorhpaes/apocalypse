@@ -9,7 +9,8 @@
     "status": {
       "good": "bem",
       "examining": "examinando",
-      "infected": "infectado"
+      "infected": "infectado",
+      "dead": "morto"
     }
   }
 }
