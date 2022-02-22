@@ -31,7 +31,7 @@ const HomerEasterEgg: React.FC = () => {
     if (!show) return
     setTimeout(() => {
       setShow(false)
-    }, 60000)
+    }, 1000)
   }, [show])
 
   return show ? (

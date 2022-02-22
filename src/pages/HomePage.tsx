@@ -9,6 +9,7 @@ import { fetchPeople } from 'src/services/people/query'
 import { setList } from 'src/state/slices/people'
 import { useTranslator } from '@eo-locale/react'
 import PersonStatusFilter from 'src/components/PersonStatusFilter/PersonStatusFilter'
+import Loader from 'src/components/Loader/Loader'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -19,6 +20,10 @@ const useStyles = makeStyles((theme: iTheme) => ({
     marginRight: theme.spacing(3),
     background: theme.palette.primary.light,
     borderRadius: 4,
+  },
+  homePageBody: {
+    position: 'relative',
+    height: '100%',
   },
 }))
 
@@ -47,7 +52,7 @@ const HomePage: React.FC = () => {
   }, [filterQuery, filterStatus])
 
   return (
-    <Container>
+    <Container className={classes.homePageBody}>
       <Header>
         <Input
           name="search"
@@ -63,7 +68,9 @@ const HomePage: React.FC = () => {
           currentValue={filterStatus}
         />
       </Header>
-      {!isLoading && <List />}
+      <div className={classes.homePageBody}>
+        {!isLoading ? <List /> : <Loader />}
+      </div>
     </Container>
   )
 }

@@ -28,7 +28,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={SystemTheme}>
       <div className={classes.backgroundApp}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader fullScreen={true} />}>
           <BootSite>
             <StoreProvider>
               <Routes />

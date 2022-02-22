@@ -20,6 +20,7 @@ import useFormat from 'src/components/hooks/useFormatDate'
 import { GiDeathSkull } from 'react-icons/gi'
 import Person from 'src/@config/Person/Person'
 import { PersonButtons } from 'src/components/PersonCard/PersonCard'
+import Loader from 'src/components/Loader/Loader'
 
 interface DetailsPageParams {
   id: string
@@ -72,7 +73,7 @@ const DetailsPage: React.FC = () => {
     getPerson()
   }, [])
 
-  if (!person.id || loading) return <h1>Loading...</h1>
+  if (!person.id || loading) return <Loader />
 
   return (
     <Container>
