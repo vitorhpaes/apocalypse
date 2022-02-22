@@ -5,6 +5,8 @@ import SystemTheme from './helpers/SystemTheme'
 import './App.css'
 import { StoreProvider } from './state'
 import getCurrentLocale from './helpers/UrlParser'
+import Loader from './components/Loader/Loader'
+
 const dynamicLocale = getCurrentLocale()
 
 const BootSite = React.lazy(
@@ -25,15 +27,15 @@ const App: React.FC = () => {
   const classes = useStyles()
   return (
     <ThemeProvider theme={SystemTheme}>
-      <Suspense fallback={<h1>Rendering...</h1>}>
-        <BootSite>
-          <StoreProvider>
-            <div className={classes.backgroundApp}>
+      <div className={classes.backgroundApp}>
+        <Suspense fallback={<Loader />}>
+          <BootSite>
+            <StoreProvider>
               <Routes />
-            </div>
-          </StoreProvider>
-        </BootSite>
-      </Suspense>
+            </StoreProvider>
+          </BootSite>
+        </Suspense>
+      </div>
     </ThemeProvider>
   )
 }
