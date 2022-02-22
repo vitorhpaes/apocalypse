@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import Person from '../@config/Person/Person'
+import React, { useCallback, useEffect, useState } from 'react'
+import Person, { StatusResponse } from '../@config/Person/Person'
 import List from 'src/components/List/List'
-import { Button, Container, Input } from '@mui/material'
+import { Container, Input } from '@mui/material'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
 import Header from 'src/components/Header/Header'
-import { handleDispatch, handleSelect } from 'src/state'
+import { handleDispatch } from 'src/state'
 import { fetchPeople } from 'src/services/people/query'
-import { FiSearch } from 'react-icons/fi'
-import { IoReloadSharp } from 'react-icons/io5'
-import { resetList, setList } from 'src/state/slices/people'
-import compare from 'src/helpers/StringSimilarity'
+import { setList } from 'src/state/slices/people'
 import { useTranslator } from '@eo-locale/react'
+import PersonStatusFilter from 'src/components/PersonStatusFilter/PersonStatusFilter'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   searchInput: {
@@ -18,7 +16,7 @@ const useStyles = makeStyles((theme: iTheme) => ({
     paddingRight: theme.spacing(1),
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(3),
     background: theme.palette.primary.light,
     borderRadius: 4,
   },
@@ -26,44 +24,27 @@ const useStyles = makeStyles((theme: iTheme) => ({
 
 const HomePage: React.FC = () => {
   const classes = useStyles()
-  const peopleState = handleSelect((state) => state.people.list)
   const dispatch = handleDispatch()
-  const [filterQuery, setFilterQuery] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>()
+  const [filterQuery, setFilterQuery] = useState<string | undefined>()
+  const [filterStatus, setFilterStatus] = useState<StatusResponse | undefined>()
   const { translate } = useTranslator()
 
   const handleSaveList = useCallback(
     (newList: Person[]) => dispatch(setList(newList)),
     []
   )
-  const handleResetList = useCallback(() => dispatch(resetList()), [])
 
   const handleFetch = async () => {
-    const personList = await fetchPeople()
+    setIsLoading(true)
+    const personList = await fetchPeople(filterQuery, filterStatus)
+    setIsLoading(false)
     handleSaveList(personList)
   }
 
-  const showingList = useMemo(() => {
-    const lowerFilterQuery = filterQuery.toLowerCase()
-    return peopleState.filter((person) => {
-      if (!filterQuery) return true
-      const toLowerCase = {
-        id: String(person.id).toLowerCase(),
-        name: person.name.toLowerCase(),
-        status: person.status.description.toLowerCase(),
-      }
-      return (
-        toLowerCase.name.includes(lowerFilterQuery) ||
-        compare(toLowerCase.id, lowerFilterQuery) > 85 ||
-        compare(toLowerCase.name, lowerFilterQuery) > 35 ||
-        toLowerCase.status === lowerFilterQuery
-      )
-    })
-  }, [peopleState, filterQuery])
-
   useEffect(() => {
-    if (peopleState.length) return
     handleFetch()
-  }, [peopleState])
+  }, [filterQuery, filterStatus])
 
   return (
     <Container>
@@ -77,25 +58,12 @@ const HomePage: React.FC = () => {
           value={filterQuery}
           onChange={(e) => setFilterQuery(e.target.value)}
         />
-        <Button
-          variant={'text'}
-          color={'info'}
-          size={'small'}
-          sx={{ minWidth: 40, minHeight: 30 }}
-        >
-          <FiSearch />
-        </Button>
-        <Button
-          variant={'text'}
-          color={'warning'}
-          size={'small'}
-          sx={{ minWidth: 40, minHeight: 30, marginLeft: 'auto' }}
-          onClick={handleResetList}
-        >
-          <IoReloadSharp />
-        </Button>
+        <PersonStatusFilter
+          setValue={setFilterStatus}
+          currentValue={filterStatus}
+        />
       </Header>
-      <List people={showingList} />
+      {!isLoading && <List />}
     </Container>
   )
 }

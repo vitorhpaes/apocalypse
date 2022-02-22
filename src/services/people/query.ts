@@ -1,7 +1,23 @@
-import { normalizePeopleResponse } from './normalizer'
+import { normalizePeople, normalizePerson } from './normalizer'
 import axios from 'axios'
+import Person, { StatusResponse } from 'src/@config/Person/Person'
 
-export const fetchPeople = async () => {
-  const { data } = await axios.get('http://localhost:3333/people')
-  return normalizePeopleResponse(data)
+export const fetchPeople = async (filter?: string, status?: StatusResponse) => {
+  const { data } = await axios.get('http://localhost:3333/people', {
+    params: {
+      name_like: filter,
+      status: !!status && status > 0 ? status : null,
+    },
+  })
+  return normalizePeople(data)
+}
+
+export const savePerson = async (person: Partial<Person>) => {
+  const { data } = await axios.patch(
+    `http://localhost:3333/people/${person.id}`,
+    {
+      person,
+    }
+  )
+  return normalizePerson(data)
 }

@@ -1,12 +1,8 @@
 import React, { memo } from 'react'
 import { Grid } from '@mui/material'
-import Person from '../../@config/Person/Person'
 import PersonCard from '../PersonCard/PersonCard'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
-
-interface ListProps {
-  people: Person[]
-}
+import { handleSelect } from 'src/state'
 
 const useStyles = makeStyles((theme: iTheme) => ({
   list: {
@@ -15,8 +11,10 @@ const useStyles = makeStyles((theme: iTheme) => ({
   },
 }))
 
-const List: React.FC<ListProps> = ({ people }) => {
+const List: React.FC = () => {
   const classes = useStyles()
+  const people = handleSelect((state) => state.people.list)
+
   return (
     <Grid container spacing={3} className={classes.list}>
       {people.map((person) => (

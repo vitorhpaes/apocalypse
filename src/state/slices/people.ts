@@ -10,34 +10,25 @@ const initialState: PeopleProps = {
   list: storage.get('apocalypse_people') ?? [],
 }
 
-const handleSetList = (state: any, newList: Person[]) => {
-  state.list = newList
-  storage.setJSON('apocalypse_people', newList)
-}
-
 export const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    setList: (state, action: PayloadAction<Person[]>) =>
-      handleSetList(state, action.payload),
+    setList: (state, action: PayloadAction<Person[]>) => {
+      state.list = action.payload
+    },
     savePerson: (state, action: PayloadAction<Partial<Person>>) => {
-      const newList = state.list.map((person) => {
-        if (person.id !== action.payload.id) return person
+      state.list = state.list.map((person) => {
+        if (action.payload.id !== person.id) return person
         return {
           ...person,
           ...action.payload,
         }
       })
-      handleSetList(state, newList)
-    },
-    resetList: (state) => {
-      state.list = []
-      storage.remove('apocalypse_people')
     },
   },
 })
 
-export const { setList, savePerson, resetList } = basketSlice.actions
+export const { setList, savePerson } = basketSlice.actions
 
 export default basketSlice.reducer
