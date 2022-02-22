@@ -1,17 +1,31 @@
-import Person, { PersonResponse } from 'src/@types/Person/Person'
+import Person, {
+  PersonResponse,
+  PersonStatus,
+  StatusResponse,
+} from 'src/@config/Person/Person'
 
-const normalizeStatus = (statusIndex: 1 | 2 | 3) => ({
+const normalizeStatus = (statusIndex: StatusResponse): PersonStatus => ({
   id: statusIndex,
   description:
-    statusIndex === 1 ? 'good' : statusIndex === 2 ? 'examining' : 'infected',
+    statusIndex === 1
+      ? 'good'
+      : statusIndex === 2
+      ? 'examining'
+      : statusIndex === 3
+      ? 'infected'
+      : statusIndex === 4
+      ? 'dead'
+      : 'dead',
 })
 
-export const normalizePeopleResponse = (data: PersonResponse[]): Person[] => {
-  const normalizedPeople = data.map((person: PersonResponse) => ({
-    ...person,
-    status: normalizeStatus(person.status),
-  }))
+export const normalizePeople = (data: PersonResponse[]): Person[] => {
+  const normalizedPeople = data.map(normalizePerson)
 
   const typedPeople: Person[] = JSON.parse(JSON.stringify(normalizedPeople))
   return typedPeople
 }
+
+export const normalizePerson = (person: PersonResponse): Person => ({
+  ...person,
+  status: normalizeStatus(person.status),
+})

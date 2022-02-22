@@ -1241,6 +1241,18 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@eo-locale/core@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@eo-locale/core/-/core-1.5.1.tgz#93ef9c56032e7ca4e59e294505e13ede15a73a5e"
+  integrity sha512-dwpJCpMApcQoxsPt6lm76YkhDSMjcHuweyUxrKeK/2844ZmCpQ9QO+F/DdQRjd14r6kh/9uPtN5ZYSCKw/DSrA==
+
+"@eo-locale/react@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@eo-locale/react/-/react-1.5.1.tgz#219e940a4af08919a6e45f00a55dd08c86749474"
+  integrity sha512-n6/ctuCbV2Yj9Vv9/9wyicmUjf4SCS6q8lTi2SCRBApSWkLFEusdMjiqO6dCIXb+c6LGwQt3BufylCkwaGAoNg==
+  dependencies:
+    "@eo-locale/core" "^1.5.1"
+
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.3.tgz#9e42981ef035beb3dd49add17acb96e8ff6f394c"
@@ -3866,6 +3878,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.28.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
+  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
 debug@*, debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
   version "4.3.3"

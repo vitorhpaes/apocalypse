@@ -9,7 +9,11 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  extends: ['plugin:react/recommended', 'standard-with-typescript', 'plugin:prettier/recommended'],
+  extends: [
+    'plugin:react/recommended',
+    'standard-with-typescript',
+    'plugin:prettier/recommended',
+  ],
   parserOptions: {
     project: './tsconfig.eslint.json',
     ecmaFeatures: {
@@ -35,9 +39,13 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
     // Allows invalidating queries without returning anything [https://eslint.org/docs/rules/no-void]
-    'no-void': ['error', {
-      allowAsStatement: true
-    }],
+    'no-used-vars': 'off',
+    'no-void': [
+      'error',
+      {
+        allowAsStatement: true,
+      },
+    ],
 
     // Allows to throw errors that are not an instance of the Error object [https://github.com/typescript-eslint/typescript-eslint/blob/v4.28.2/packages/eslint-plugin/docs/rules/no-throw-literal.md]
     'no-throw-literal': 'off',

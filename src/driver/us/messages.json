@@ -1,0 +1,33 @@
+{
+  "root": {
+    "details": "details"
+  },
+  "address": {
+    "title": "Address",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "street": "Street",
+    "zipCode": "Postal code"
+  },
+  "search": {
+    "inputPlaceHolder": "Search..."
+  },
+  "person": {
+    "age": "age",
+    "killsDescription": {
+      "good": "This survivor killed {total} zombies so far",
+      "examining": "This survivor killed {total} zombies so far. Currently it's examining possible virus",
+      "infected": "This person killed {total} zombies until get infected! Currently it's a zombie",
+      "dead": "This person killed {total} zombies until get infected ou morrer! Currently it's dead"
+    },
+    "status": {
+      "title": "Health",
+      "dontFilter": "Don't filter",
+      "good": "good",
+      "examining": "examining",
+      "infected": "infected",
+      "dead": "dead"
+    }
+  }
+}
