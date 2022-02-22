@@ -56,5 +56,6 @@ If you don't want to configure, default location (pt-br) will be set at localhos
 
 # Future features
 
+- deployment to heroku
 - homepage tests
 - details page tests
