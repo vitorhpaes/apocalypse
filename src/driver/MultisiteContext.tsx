@@ -3,13 +3,12 @@ import { SiteRoutes } from 'src/@config/Site/Routes'
 
 interface MultiSiteProps {
   routes: SiteRoutes
+  format: { [key: string]: string }
 }
 
-type iMultiSiteContext = MultiSiteProps | null
+type iMultiSiteContext = MultiSiteProps
 
-const initial = null
-
-export const MultiSiteContext = createContext(initial as iMultiSiteContext)
+export const MultiSiteContext = createContext({} as iMultiSiteContext)
 
 const MultiSiteContextProvider: React.FC<{
   value: iMultiSiteContext

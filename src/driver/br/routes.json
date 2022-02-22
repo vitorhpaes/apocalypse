@@ -1,4 +1,4 @@
 {
   "HOME": "/",
-  "PERSON_DETAILS": "/person"
+  "PERSON_DETAILS": "/pessoa/:id"
 }

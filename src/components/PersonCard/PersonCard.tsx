@@ -6,11 +6,11 @@ import {
   isExamining,
   isInfected,
   isGood,
+  isDead,
 } from 'src/@config/Person/Constants'
 import Person, { PersonStatus } from 'src/@config/Person/Person'
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   CardActions,
@@ -20,11 +20,12 @@ import {
   Typography,
 } from '@mui/material'
 import { makeStyles } from '@material-ui/styles'
-import { GiShamblingZombie, GiSwordman } from 'react-icons/gi'
-import { FiActivity } from 'react-icons/fi'
 import { handleDispatch } from 'src/state'
 import { savePerson } from 'src/state/slices/people'
 import { useTranslator } from '@eo-locale/react'
+import { useHistory } from 'react-router-dom'
+import { useSite } from 'src/driver/MultisiteContext'
+import StatusIcon from '../StatusIcon/StatusIcon'
 
 interface PersonCardProps {
   person: Person
@@ -54,24 +55,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 3,
     letterSpacing: 0.4,
   },
-  infectedIcon: {
-    color: theme.palette.error.dark,
-    fontSize: 22,
-  },
-  examiningIcon: {
-    color: theme.palette.warning.dark,
-    fontSize: 22,
-  },
-  goodIcon: {
-    color: theme.palette.success.dark,
-    fontSize: 22,
-  },
 }))
 
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   const classes = useStyles()
   const dispatch = handleDispatch()
   const { translate } = useTranslator()
+  const history = useHistory()
+  const { routes } = useSite()
 
   const handleChangePersonStatus = useCallback(
     (newStatus: PersonStatus) =>
@@ -83,6 +74,9 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
       ),
     []
   )
+
+  const redirectToPersonPage = () =>
+    history.push(`${routes.PERSON_DETAILS}/${person.id}`)
 
   return (
     <Grid item md={4} sm={6}>
@@ -103,39 +97,29 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
               sx={{ width: 80, height: 80 }}
             />
             <Grid className={classes.tagsParent}>
-              <Badge color="primary">
-                {person.status.description === 'good' && (
-                  <GiSwordman
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-                {person.status.description === 'examining' && (
-                  <FiActivity
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-                {person.status.description === 'infected' && (
-                  <GiShamblingZombie
-                    className={classes[`${person.status.description}Icon`]}
-                  />
-                )}
-              </Badge>
+              <StatusIcon status={person.status} size={22} />
             </Grid>
           </Grid>
           <Typography variant="h5">{person.name}</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">{translate('root.details')}</Button>
-          {!isExamining(person.status) && !isInfected(person.status) && (
-            <Button
-              size="small"
-              color={'warning'}
-              onClick={() => handleChangePersonStatus(PERSON_STATUS_EXAMINING)}
-            >
-              {translate('person.status.examining')}
-            </Button>
-          )}
-          {isExamining(person.status) && (
+          <Button size="small" onClick={redirectToPersonPage}>
+            {translate('root.details')}
+          </Button>
+          {!isExamining(person.status) &&
+            !isInfected(person.status) &&
+            !isDead(person.status) && (
+              <Button
+                size="small"
+                color={'warning'}
+                onClick={() =>
+                  handleChangePersonStatus(PERSON_STATUS_EXAMINING)
+                }
+              >
+                {translate('person.status.examining')}
+              </Button>
+            )}
+          {isExamining(person.status) && !isDead(person.status) && (
             <Button
               size="small"
               color={'success'}
@@ -144,15 +128,16 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
               {translate('person.status.good')}
             </Button>
           )}
-          {(isExamining(person.status) || isGood(person.status)) && (
-            <Button
-              size="small"
-              color={'error'}
-              onClick={() => handleChangePersonStatus(PERSON_STATUS_INFECTED)}
-            >
-              {translate('person.status.infected')}
-            </Button>
-          )}
+          {(isExamining(person.status) || isGood(person.status)) &&
+            !isDead(person.status) && (
+              <Button
+                size="small"
+                color={'error'}
+                onClick={() => handleChangePersonStatus(PERSON_STATUS_INFECTED)}
+              >
+                {translate('person.status.infected')}
+              </Button>
+            )}
         </CardActions>
       </Card>
     </Grid>

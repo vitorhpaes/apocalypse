@@ -1,15 +1,31 @@
 {
   "root": {
-    "details": "detalhes"
+    "details": "Detalhes"
+  },
+  "address": {
+    "title": "Endereço",
+    "country": "País",
+    "state": "Província",
+    "city": "Cidade",
+    "street": "Rua",
+    "zipCode": "Código postal"
   },
   "search": {
     "inputPlaceHolder": "Procurar..."
   },
   "person": {
+    "age": "idade",
+    "killsDescription": {
+      "good": "Este sobrevivente matou {total} zumbis até agora",
+      "examining": "Este sobrevivente matou {total} zumbis até agora. Atualmente está sendo examinado",
+      "infected": "Esta pessoa matou {total} zumbis até ser infectado! Atualmente é um zumbi",
+      "dead": "Esta pessoa matou {total} zumbis até ser infectado ou morrer! Atualmente está morto"
+    },
     "status": {
       "good": "bem",
       "examining": "examinando",
-      "infected": "infectado"
+      "infected": "infectado",
+      "dead": "morto"
     }
   }
 }
