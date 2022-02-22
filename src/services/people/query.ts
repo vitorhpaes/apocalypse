@@ -21,7 +21,8 @@ export const savePerson = async (person: Partial<Person>) => {
   const { data } = await axios.patch(
     `http://localhost:3333/people/${person.id}`,
     {
-      person,
+      ...person,
+      status: person.status?.id,
     }
   )
   return normalizePerson(data)
