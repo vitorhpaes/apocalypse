@@ -22,6 +22,8 @@
       "dead": "Cette personne a tué {total} zombies jusqu'à ce qu'elle soit infectée ou meure! Actuellement c'est mort"
     },
     "status": {
+      "title": "Santé",
+      "dontFilter": "Ne Filtre",
       "good": "bien",
       "examining": "examinant",
       "infected": "infecté",
