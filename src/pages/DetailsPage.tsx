@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Avatar,
   Button,
@@ -8,8 +8,8 @@ import {
   Typography,
 } from '@mui/material'
 import Header from 'src/components/Header/Header'
-import { handleSelect } from 'src/state'
-import { Redirect, useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { findPerson } from 'src/services/people/query'
 import { useSite } from 'src/driver/MultisiteContext'
 import { iTheme, makeStyles } from 'src/helpers/SystemTheme'
 import { FiCalendar, FiChevronLeft } from 'react-icons/fi'
@@ -19,6 +19,8 @@ import StatusIcon from 'src/components/StatusIcon/StatusIcon'
 import useFormat from 'src/components/hooks/useFormatDate'
 import { GiDeathSkull } from 'react-icons/gi'
 import Person from 'src/@config/Person/Person'
+import { PersonButtons } from 'src/components/PersonCard/PersonCard'
+import Loader from 'src/components/Loader/Loader'
 
 interface DetailsPageParams {
   id: string
@@ -55,13 +57,23 @@ const DetailsPage: React.FC = () => {
   const history = useHistory()
   const classes = useStyles()
   const { translate } = useTranslator()
-  const person = handleSelect((state) =>
-    state.people.list.find((person) => person.id === Number(id))
-  )
+  const [person, setPerson] = useState<Person>({} as Person)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const redirectToHomePage = () => history.push(routes.HOME)
+  const getPerson = async () => {
+    setLoading(true)
+    const response = await findPerson(id)
+    if (!response) return redirectToHomePage()
+    setLoading(false)
+    setPerson(response)
+  }
 
-  if (!person) return <Redirect to={routes.HOME} />
+  useEffect(() => {
+    getPerson()
+  }, [])
+
+  if (!person.id || loading) return <Loader />
 
   return (
     <Container>
@@ -95,6 +107,7 @@ const DetailsPage: React.FC = () => {
                 >
                   {person.description}
                 </Typography>
+                <PersonButtons person={person} />
               </div>
             </div>
           </Grid>
@@ -108,45 +121,39 @@ const DetailsPage: React.FC = () => {
           >
             <PersonChips person={person} />
           </Grid>
-          <Grid md={12} item container marginTop={2}>
-            <Grid item md={6}>
-              <Typography variant={'body2'} className={classes.fontColor}>
-                {translate('address.title')}:
-              </Typography>
-              <ul className={classes.addressList}>
-                <li>
-                  {translate('address.country')}: {person.address.country}
-                </li>
-                <li>
-                  {translate('address.state')}: {person.address.state}
-                </li>
-                <li>
-                  {translate('address.city')}: {person.address.city}
-                </li>
-                <li>
-                  {translate('address.street')}: {person.address.street}
-                </li>
-                <li>
-                  {translate('address.zipCode')}: {person.address.zipCode}
-                </li>
-              </ul>
-            </Grid>
-            <Grid item md={6}>
-              <Typography
-                variant={'body2'}
-                className={classes.fontColorSecondary}
-              >
-                {translate(
-                  `person.killsDescription.${person.status.description}`,
-                  {
-                    total: person.totalKills,
-                  }
-                )}
-              </Typography>
-            </Grid>
-          </Grid>
         </Grid>
       </Header>
+      <Grid md={12} item container marginTop={2}>
+        <Grid item md={6}>
+          <Typography variant={'body2'} className={classes.fontColor}>
+            {translate('address.title')}:
+          </Typography>
+          <ul className={classes.addressList}>
+            <li>
+              {translate('address.country')}: {person.address.country}
+            </li>
+            <li>
+              {translate('address.state')}: {person.address.state}
+            </li>
+            <li>
+              {translate('address.city')}: {person.address.city}
+            </li>
+            <li>
+              {translate('address.street')}: {person.address.street}
+            </li>
+            <li>
+              {translate('address.zipCode')}: {person.address.zipCode}
+            </li>
+          </ul>
+        </Grid>
+        <Grid item md={6}>
+          <Typography variant={'body2'} className={classes.fontColorSecondary}>
+            {translate(`person.killsDescription.${person.status.description}`, {
+              total: person.totalKills,
+            })}
+          </Typography>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

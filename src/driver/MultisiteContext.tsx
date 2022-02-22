@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import { SiteRoutes } from 'src/@config/Site/Routes'
+import HomerEasterEgg from 'src/components/Loader/HomerEasterEgg'
 
 interface MultiSiteProps {
   routes: SiteRoutes
@@ -16,6 +17,7 @@ const MultiSiteContextProvider: React.FC<{
   return (
     <MultiSiteContext.Provider value={value}>
       {children}
+      <HomerEasterEgg />
     </MultiSiteContext.Provider>
   )
 }

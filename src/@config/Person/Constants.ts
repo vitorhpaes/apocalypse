@@ -12,6 +12,17 @@ export const PERSON_STATUS_INFECTED: PersonStatus = {
   id: 3,
   description: 'infected',
 }
+export const PERSON_STATUS_DEAD: PersonStatus = {
+  id: 4,
+  description: 'dead',
+}
+
+export const ALL_POSSIBLE_STATUS = [
+  PERSON_STATUS_GOOD,
+  PERSON_STATUS_EXAMINING,
+  PERSON_STATUS_INFECTED,
+  PERSON_STATUS_DEAD,
+]
 
 export interface PersonStatusClasses {
   [key: number]: 'default' | 'success' | 'warning' | 'error' | 'secondary'

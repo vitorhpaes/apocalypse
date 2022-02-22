@@ -22,6 +22,8 @@
       "dead": "Esta pessoa matou {total} zumbis até ser infectado ou morrer! Atualmente está morto"
     },
     "status": {
+      "title": "Saúde",
+      "dontFilter": "Não filtrar",
       "good": "bem",
       "examining": "examinando",
       "infected": "infectado",

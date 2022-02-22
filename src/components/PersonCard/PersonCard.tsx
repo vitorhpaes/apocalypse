@@ -22,6 +22,7 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import { handleDispatch } from 'src/state'
 import { savePerson } from 'src/state/slices/people'
+import { savePerson as savePersonAPI } from 'src/services/people/query'
 import { useTranslator } from '@eo-locale/react'
 import { useHistory } from 'react-router-dom'
 import { useSite } from 'src/driver/MultisiteContext'
@@ -59,24 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   const classes = useStyles()
-  const dispatch = handleDispatch()
-  const { translate } = useTranslator()
-  const history = useHistory()
-  const { routes } = useSite()
-
-  const handleChangePersonStatus = useCallback(
-    (newStatus: PersonStatus) =>
-      dispatch(
-        savePerson({
-          id: person.id,
-          status: newStatus,
-        })
-      ),
-    []
-  )
-
-  const redirectToPersonPage = () =>
-    history.push(`${routes.PERSON_DETAILS}/${person.id}`)
 
   return (
     <Grid item md={4} sm={6}>
@@ -103,44 +86,92 @@ const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
           <Typography variant="h5">{person.name}</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={redirectToPersonPage}>
-            {translate('root.details')}
-          </Button>
-          {!isExamining(person.status) &&
-            !isInfected(person.status) &&
-            !isDead(person.status) && (
-              <Button
-                size="small"
-                color={'warning'}
-                onClick={() =>
-                  handleChangePersonStatus(PERSON_STATUS_EXAMINING)
-                }
-              >
-                {translate('person.status.examining')}
-              </Button>
-            )}
-          {isExamining(person.status) && !isDead(person.status) && (
-            <Button
-              size="small"
-              color={'success'}
-              onClick={() => handleChangePersonStatus(PERSON_STATUS_GOOD)}
-            >
-              {translate('person.status.good')}
-            </Button>
-          )}
-          {(isExamining(person.status) || isGood(person.status)) &&
-            !isDead(person.status) && (
-              <Button
-                size="small"
-                color={'error'}
-                onClick={() => handleChangePersonStatus(PERSON_STATUS_INFECTED)}
-              >
-                {translate('person.status.infected')}
-              </Button>
-            )}
+          <PersonButtons person={person} showDetailsButton={true} />
         </CardActions>
       </Card>
     </Grid>
+  )
+}
+
+interface PersonButtonsProps {
+  person: Person
+  showDetailsButton?: boolean
+}
+
+export const PersonButtons: React.FC<PersonButtonsProps> = ({
+  person,
+  showDetailsButton = false,
+}) => {
+  const dispatch = handleDispatch()
+  const history = useHistory()
+  const { routes } = useSite()
+
+  const handleChangePersonStatus = useCallback(
+    async (newStatus: PersonStatus) => {
+      const modifiedPerson = await savePersonAPI({
+        id: person.id,
+        status: newStatus,
+      })
+      if (!modifiedPerson.id) return
+      dispatch(
+        savePerson({
+          id: person.id,
+          status: newStatus,
+        })
+      )
+    },
+    []
+  )
+
+  const redirectToPersonPage = () =>
+    history.push(`${routes.PERSON_DETAILS}/${person.id}`)
+
+  const { translate } = useTranslator()
+
+  return (
+    <>
+      {!!showDetailsButton && (
+        <Button size="small" onClick={redirectToPersonPage}>
+          {translate('root.details')}
+        </Button>
+      )}
+      {!isExamining(person.status) &&
+        !isInfected(person.status) &&
+        !isDead(person.status) && (
+          <Button
+            size="small"
+            color={'warning'}
+            onClick={async () =>
+              await handleChangePersonStatus(PERSON_STATUS_EXAMINING)
+            }
+          >
+            {translate('person.status.examining')}
+          </Button>
+        )}
+      {isExamining(person.status) && !isDead(person.status) && (
+        <Button
+          size="small"
+          color={'success'}
+          onClick={async () =>
+            await handleChangePersonStatus(PERSON_STATUS_GOOD)
+          }
+        >
+          {translate('person.status.good')}
+        </Button>
+      )}
+      {(isExamining(person.status) || isGood(person.status)) &&
+        !isDead(person.status) && (
+          <Button
+            size="small"
+            color={'error'}
+            onClick={async () =>
+              await handleChangePersonStatus(PERSON_STATUS_INFECTED)
+            }
+          >
+            {translate('person.status.infected')}
+          </Button>
+        )}
+    </>
   )
 }
 
