@@ -18,6 +18,7 @@ import { PERSON_STATUS_CLASSES } from 'src/@config/Person/Constants'
 import StatusIcon from 'src/components/StatusIcon/StatusIcon'
 import useFormat from 'src/components/hooks/useFormatDate'
 import { GiDeathSkull } from 'react-icons/gi'
+import Person from 'src/@config/Person/Person'
 
 interface DetailsPageParams {
   id: string
@@ -26,6 +27,9 @@ interface DetailsPageParams {
 const useStyles = makeStyles((theme: iTheme) => ({
   fontColor: {
     color: theme.palette.text.primary,
+  },
+  fontColorSecondary: {
+    color: theme.palette.text.secondary,
   },
   headerGrid: {
     marginTop: theme.spacing(3),
@@ -39,15 +43,18 @@ const useStyles = makeStyles((theme: iTheme) => ({
   chip: {
     paddingLeft: `${theme.spacing(1)}!important`,
   },
+  addressList: {
+    listStyle: 'none',
+    color: theme.palette.text.secondary,
+  },
 }))
 
 const DetailsPage: React.FC = () => {
   const { id } = useParams<DetailsPageParams>()
   const { routes } = useSite()
-  const { formatDate } = useFormat()
   const history = useHistory()
-  const { translate } = useTranslator()
   const classes = useStyles()
+  const { translate } = useTranslator()
   const person = handleSelect((state) =>
     state.people.list.find((person) => person.id === Number(id))
   )
@@ -82,7 +89,10 @@ const DetailsPage: React.FC = () => {
                 {person.name}
               </Typography>
               <div className={classes.headerInfoDescription}>
-                <Typography variant={'body2'} className={classes.fontColor}>
+                <Typography
+                  variant={'body2'}
+                  className={classes.fontColorSecondary}
+                >
                   {person.description}
                 </Typography>
               </div>
@@ -96,42 +106,94 @@ const DetailsPage: React.FC = () => {
             direction={'column'}
             alignItems={'flex-end'}
           >
-            <Chip
-              size={'small'}
-              label={`#${person.id}`}
-              color={'secondary'}
-              variant={'outlined'}
-            />
-            <Chip
-              size={'small'}
-              className={classes.chip}
-              label={translate(person.status.description)}
-              color={PERSON_STATUS_CLASSES[person.status.id]}
-              icon={<StatusIcon status={person.status} size={15} />}
-              variant={'outlined'}
-            />
-            <Chip
-              size={'small'}
-              className={classes.chip}
-              label={`${translate('person.age')}: ${person.age}`}
-              color={'info'}
-              icon={<FiCalendar size={15} />}
-              variant={'outlined'}
-            />
-            {!!person.deathDate && (
-              <Chip
-                size={'small'}
-                className={classes.chip}
-                label={`${formatDate(new Date(person.deathDate))}`}
-                color={'secondary'}
-                icon={<GiDeathSkull size={15} />}
-                variant={'outlined'}
-              />
-            )}
+            <PersonChips person={person} />
+          </Grid>
+          <Grid md={12} item container marginTop={2}>
+            <Grid item md={6}>
+              <Typography variant={'body2'} className={classes.fontColor}>
+                {translate('address.title')}:
+              </Typography>
+              <ul className={classes.addressList}>
+                <li>
+                  {translate('address.country')}: {person.address.country}
+                </li>
+                <li>
+                  {translate('address.state')}: {person.address.state}
+                </li>
+                <li>
+                  {translate('address.city')}: {person.address.city}
+                </li>
+                <li>
+                  {translate('address.street')}: {person.address.street}
+                </li>
+                <li>
+                  {translate('address.zipCode')}: {person.address.zipCode}
+                </li>
+              </ul>
+            </Grid>
+            <Grid item md={6}>
+              <Typography
+                variant={'body2'}
+                className={classes.fontColorSecondary}
+              >
+                {translate(
+                  `person.killsDescription.${person.status.description}`,
+                  {
+                    total: person.totalKills,
+                  }
+                )}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Header>
     </Container>
+  )
+}
+
+interface PersonChipsProps {
+  person: Person
+}
+
+const PersonChips: React.FC<PersonChipsProps> = ({ person }) => {
+  const classes = useStyles()
+  const { formatDate } = useFormat()
+  const { translate } = useTranslator()
+  return (
+    <>
+      <Chip
+        size={'small'}
+        label={`#${person.id}`}
+        color={'secondary'}
+        variant={'outlined'}
+      />
+      <Chip
+        size={'small'}
+        className={classes.chip}
+        label={translate(person.status.description)}
+        color={PERSON_STATUS_CLASSES[person.status.id]}
+        icon={<StatusIcon status={person.status} size={15} />}
+        variant={'outlined'}
+      />
+      <Chip
+        size={'small'}
+        className={classes.chip}
+        label={`${translate('person.age')}: ${person.age}`}
+        color={'info'}
+        icon={<FiCalendar size={15} />}
+        variant={'outlined'}
+      />
+      {!!person.deathDate && (
+        <Chip
+          size={'small'}
+          className={classes.chip}
+          label={`${formatDate(new Date(person.deathDate))}`}
+          color={'secondary'}
+          icon={<GiDeathSkull size={15} />}
+          variant={'outlined'}
+        />
+      )}
+    </>
   )
 }
 

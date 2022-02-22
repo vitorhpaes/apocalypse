@@ -2,11 +2,25 @@
   "root": {
     "details": "Des détails"
   },
+  "address": {
+    "title": "Adresse",
+    "country": "de Campagne",
+    "state": "État",
+    "city": "ville",
+    "street": "Rue",
+    "zipCode": "Code postal"
+  },
   "search": {
     "inputPlaceHolder": "Chercher..."
   },
   "person": {
     "age": "âge",
+    "killsDescription": {
+      "good": "Ce survivant a tué {total} zombies jusqu'à présent",
+      "examining": "Ce survivant a tué {total} tué des zombies jusqu'à présent. Actuellement, il examine un éventuel virus",
+      "infected": "Cette personne a tué {total} zombies jusqu'à ce qu'elle soit infectée! Actuellement c'est un zombie",
+      "dead": "Cette personne a tué {total} zombies jusqu'à ce qu'elle soit infectée ou meure! Actuellement c'est mort"
+    },
     "status": {
       "good": "bien",
       "examining": "examinant",
