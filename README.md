@@ -1,6 +1,6 @@
 # Apocalypse Challenge
 
-This is the technical challenge from Maxihost enterprise.
+This is a technical challenge example.
 
 # Requirements
 
