@@ -1,7 +1,5 @@
 # Apocalypse Challenge
 
-This is a technical challenge example.
-
 # Requirements
 
 - List survivors from a zombie apocalypse
